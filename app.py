@@ -1,8 +1,21 @@
 from flask import Flask, request, jsonify, Response
 from controllers.movies import *
 from db import create_tables
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
+
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Tietoevry-API"
+    },
+)
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 
 @app.route('/movies', methods=['GET', 'POST'])
