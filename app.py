@@ -22,11 +22,12 @@ app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 def create_movie():
     if request.method == 'GET':
         return jsonify(get_movies())
-
     if request.method == 'POST':
         movie = request.get_json()
-        if not movie['title'] or not movie['release_year']:
-            return Response("Bad request", status=400)
+        if not movie.get('title') or not movie.get('release_year'):
+            return Response("Bad request: missing argument", status=400)
+        if movie.get('description') == None:
+            movie['description'] = ''
         return jsonify(insert_movie(movie))
 
 
@@ -40,8 +41,12 @@ def update_movie(id):
 
     if request.method == 'PUT':
         movie = request.get_json()
-        updated_movie = update_movie_by_id(movie, id)
+        if not movie.get('title') or not movie.get('release_year'):
+            return Response("Bad request: missing argument", status=400)
+        if movie.get('description') == None:
+            movie['description'] = ''
 
+        updated_movie = update_movie_by_id(movie, id)
         if not updated_movie:
             return Response("id not found", status=404)
         return jsonify(updated_movie)
