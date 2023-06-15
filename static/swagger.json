@@ -1,229 +1,101 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "description": "Tietoevry assignment",
-      "version": "1.0.0",
-      "title": "Movie Database",
-      "contact": {
-        "email": "michalwagner163@gmail.com"
-      }
-    },
-    "tags": [
-      {
-        "name": "movies",
-        "description": "movie operations"
-      }
-    ],
-    "paths": {
-      "/movies": {
-        "get": {
-          "tags": [
-            "movies"
-          ],
-          "summary": "Get list of movies",
-          "description": "",
-          "operationId": "getMovies",
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/MovieList"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "post": {
-          "tags": [
-            "movies"
-          ],
-          "summary": "Insert a new movie",
-          "description": "Use this endpoint to create a movie",
-          "operationId": "addMovie",
-          "requestBody": {
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Tietoevry assignment",
+    "version": "1.0.0",
+    "title": "Movie Database",
+    "contact": {
+      "email": "michalwagner163@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "movies",
+      "description": "movie operations"
+    }
+  ],
+  "paths": {
+    "/movies": {
+      "get": {
+        "tags": [
+          "movies"
+        ],
+        "summary": "Get list of movies",
+        "description": "",
+        "operationId": "getMovies",
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "release_year": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "title",
-                    "release_year"
-                  ]
-                },
-                "examples": {
-                  "Successful": {
-                    "value": {
-                      "title": "The Matrix Reloaded",
-                      "description": "It is the sequel to The Matrix (1999) and the second installment in the Matrix film series.",
-                      "release_year": "2003"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "OK"
-            },
-            "400": {
-              "description": "Bad request.",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "There is an internal issue.",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+                  "$ref": "#/components/schemas/MovieList"
                 }
               }
             }
           }
         }
       },
-      "/movies/{id}": {
-        "get": {
-          "tags": [
-            "movies"
-          ],
-          "summary": "Get information of single movie",
-          "description": "",
-          "operationId": "getMovie",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
+      "post": {
+        "tags": [
+          "movies"
+        ],
+        "summary": "Insert a new movie",
+        "description": "Use this endpoint to create a movie",
+        "operationId": "addMovie",
+        "requestBody": {
+          "content": {
+            "application/json": {
               "schema": {
-                "type": "integer"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "release_year": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "title",
+                  "release_year"
+                ]
               },
-              "required": true,
-              "description": "movie id."
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Movie"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "id not found.",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "There is an internal issue.",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
+              "examples": {
+                "Successful": {
+                  "value": {
+                    "title": "The Matrix Reloaded",
+                    "description": "It is the sequel to The Matrix (1999) and the second installment in the Matrix film series.",
+                    "release_year": "2003"
                   }
                 }
               }
             }
           }
         },
-        "put": {
-          "tags": [
-            "movies"
-          ],
-          "summary": "Update a movie",
-          "description": "Use this endpoint to update a movie",
-          "operationId": "updateMovie",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "schema": {
-                "type": "integer"
-              },
-              "required": true,
-              "description": "movie id."
-            }
-          ],
-          "requestBody": {
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request: missing argument",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "title",
-                    "description"
-                  ]
-                },
-                "examples": {
-                  "Successful insert": {
-                    "value": {
-                      "title": "The Matrix",
-                      "description": "The Matrix is a 1999 science fiction action film written and directed by the Wachowskis.",
-                      "release_year": 1999
-                    }
-                  }
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
           },
-          "responses": {
-            "200": {
-              "description": "OK"
-            },
-            "404": {
-              "description": "id not found.",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  }
-                }
-              }
-            },
-            "500": {
-              "description": "There was an internal issue.",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
-                  }
+          "500": {
+            "description": "There is an internal issue.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -231,45 +103,183 @@
         }
       }
     },
-    "components": {
-      "schemas": {
-        "Error": {
-          "type": "object",
-          "properties": {
-            "message": {
-              "type": "string",
-              "description": "Describe the error in english."
-            }
-          }
-        },
-        "Movie": {
-          "type": "object",
-          "properties": {
-            "id": {
+    "/movies/{id}": {
+      "get": {
+        "tags": [
+          "movies"
+        ],
+        "summary": "Get information of single movie",
+        "description": "",
+        "operationId": "getMovie",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
               "type": "integer"
             },
-            "title": {
-              "type": "string"
+            "required": true,
+            "description": "movie id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "id not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "There is an internal issue.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "movies"
+        ],
+        "summary": "Update a movie",
+        "description": "Use this endpoint to update a movie",
+        "operationId": "updateMovie",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
             },
-            "description": {
-              "type": "string"
-            },
-            "release_year": {
-              "type": "number"
+            "required": true,
+            "description": "movie id."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "description"
+                ]
+              },
+              "examples": {
+                "Successful insert": {
+                  "value": {
+                    "title": "The Matrix",
+                    "description": "The Matrix is a 1999 science fiction action film written and directed by the Wachowskis.",
+                    "release_year": 1999
+                  }
+                }
+              }
             }
           }
         },
-        "MovieList": {
-          "type": "object",
-          "properties": {
-            "movies": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Movie"
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request: missing argument",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "id not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "There was an internal issue.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
           }
         }
       }
     }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Describe the error in english."
+          }
+        }
+      },
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "release_year": {
+            "type": "number"
+          }
+        }
+      },
+      "MovieList": {
+        "type": "object",
+        "properties": {
+          "movies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          }
+        }
+      }
+    }
   }
+}
