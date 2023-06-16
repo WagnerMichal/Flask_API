@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify, Response
-from controllers.movies import *
-from db import create_tables
 from flask_swagger_ui import get_swaggerui_blueprint
+from controllers.movies import get_movies, get_by_id, insert_movie, update_movie_by_id
+from db import create_tables
+
 
 app = Flask(__name__)
 
@@ -24,9 +25,10 @@ def create_movie():
         return jsonify(get_movies())
     if request.method == 'POST':
         movie = request.get_json()
+        print(type(movie))
         if not movie.get('title') or not movie.get('release_year'):
             return Response("Bad request: missing argument", status=400)
-        if movie.get('description') == None:
+        if movie.get('description') is None:
             movie['description'] = ''
         return jsonify(insert_movie(movie))
 
@@ -43,7 +45,7 @@ def update_movie(id):
         movie = request.get_json()
         if not movie.get('title') or not movie.get('release_year'):
             return Response("Bad request: missing argument", status=400)
-        if movie.get('description') == None:
+        if movie.get('description') is None:
             movie['description'] = ''
 
         updated_movie = update_movie_by_id(movie, id)

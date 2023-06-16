@@ -1,9 +1,15 @@
-from db import connect_db
 import sqlite3
 from flask import Response
+from db import connect_db
 
 
 def get_movies():
+    """
+    Function to get all movies.
+
+    Returns:
+        list: List of all movies.
+    """
     movies = []
     try:
         connect = connect_db()
@@ -27,12 +33,21 @@ def get_movies():
     return movies
 
 
-def get_by_id(id):
+def get_by_id(movie_id):
+    """
+    Function to get movie with specific id
+
+    Args:
+        movie_id (int): id of movie
+
+    Returns:
+        dict: Dictionary with columns of table and their values.
+    """
     movie = {}
     try:
         connect = connect_db()
         cursor = connect.cursor()
-        cursor.execute("SELECT * FROM movies WHERE id = ?", [id])
+        cursor.execute("SELECT * FROM movies WHERE id = ?", [movie_id])
         row = cursor.fetchone()
 
         movie["id"] = row["id"]
@@ -50,6 +65,15 @@ def get_by_id(id):
 
 
 def insert_movie(movie):
+    """
+    Function for creating new movie.
+
+    Args:
+        movie (dict): Dictionary with columns of table and their values.
+
+    Returns:
+        dict: Dictionary with columns of table and their values.
+    """
     inserted_movie = {}
     try:
         connect = connect_db()
@@ -68,16 +92,26 @@ def insert_movie(movie):
     return inserted_movie
 
 
-def update_movie_by_id(movie, id):
+def update_movie_by_id(movie, movie_id):
+    """
+    Updates existing record of movie.
+
+    Args:
+        movie (dict): Dictionary with columns of table and their values.
+        movie_id (int): id of movie to be updated
+
+    Returns:
+        dict: Dictionary with columns of table and their values.
+    """
     updated_movie = {}
     try:
         connect = connect_db()
         cursor = connect.cursor()
         statement = "UPDATE movies SET title = ?, description = ?, release_year = ? WHERE id = ?"
         cursor.execute(
-            statement, (movie["title"], movie["description"], movie["release_year"], id))
+            statement, (movie["title"], movie["description"], movie["release_year"], movie_id))
         connect.commit()
-        updated_movie = get_by_id(id)
+        updated_movie = get_by_id(movie_id)
 
     except:
         connect.rollback()
